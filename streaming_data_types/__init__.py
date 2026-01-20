@@ -42,6 +42,8 @@ from streaming_data_types.timestamps_tdct import deserialise_tdct, serialise_tdc
 
 __version__ = version
 
+from streaming_data_types.units_un00 import serialise_un00, deserialise_un00
+
 SERIALISERS = {
     "an44": serialise_an44,
     "ev42": serialise_ev42,
@@ -71,6 +73,7 @@ SERIALISERS = {
     "ad00": serialise_ad00,
     "da00": serialise_da00,
     "ar51": serialise_ar51,
+    "un00": serialise_un00,
 }
 
 
@@ -103,4 +106,5 @@ DESERIALISERS = {
     "ad00": deserialise_ad00,
     "da00": deserialise_da00,
     "ar51": deserialise_ar51,
+    "un00": deserialise_un00,
 }
