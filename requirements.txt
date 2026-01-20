@@ -1,2 +1,0 @@
-flatbuffers
-numpy<2.0.0

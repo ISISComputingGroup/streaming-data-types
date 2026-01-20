@@ -136,3 +136,5 @@ dmypy.json
 # VSCode
 .vscode
 
+
+src/streaming_data_types/_version.py

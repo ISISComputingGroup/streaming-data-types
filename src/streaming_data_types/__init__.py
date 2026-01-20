@@ -39,10 +39,10 @@ from streaming_data_types.sample_environment_senv import (
 )
 from streaming_data_types.status_x5f2 import deserialise_x5f2, serialise_x5f2
 from streaming_data_types.timestamps_tdct import deserialise_tdct, serialise_tdct
+from streaming_data_types.units_un00 import serialise_un00, deserialise_un00
 
 __version__ = version
 
-from streaming_data_types.units_un00 import serialise_un00, deserialise_un00
 
 SERIALISERS = {
     "an44": serialise_an44,
