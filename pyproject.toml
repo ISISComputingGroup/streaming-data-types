@@ -41,7 +41,7 @@ classifiers = [
 
 dependencies = [
   "flatbuffers",
-  "numpy<2",  # Pinned to <2 due to f142 np.unicode
+  "numpy>2"
 ]
 
 [project.optional-dependencies]
