@@ -8,6 +8,7 @@ table Pu00Message {
                                                 // If pulse times are available in the aquisition system, this field holds
                                                 // those timestamps. Holds wall time otherwise.
 
+    vetos : uint;                               // Vetos for this frame
     period_number : uint;                       // Period number into which this pulse was collected
     proton_charge : float;                      // Proton charge for this frame (uAh per frame)
 }
