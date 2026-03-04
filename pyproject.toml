@@ -61,10 +61,6 @@ dev = [
 testpaths = "tests"
 asyncio_mode = "auto"
 addopts = "--cov --cov-report=html -vv"
-filterwarnings = [
-    'ignore:FigureCanvasAgg is non-interactive, and thus cannot be shown:UserWarning',
-    'error:Using UFloat objects with std_dev==0 may give unexpected results.:UserWarning',
-]
 
 [tool.coverage.run]
 branch = true
