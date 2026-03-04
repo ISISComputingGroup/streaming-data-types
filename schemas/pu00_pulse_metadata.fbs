@@ -4,7 +4,7 @@ file_identifier "pu00";
 
 table Pu00Message {
     message_id : long;                          // Consecutive numbers, to detect missing or unordered messages. 
-    reference_time : [long] (required);         // Nanoseconds since Unix epoch (1 Jan 1970)
+    reference_time : long (required);           // Nanoseconds since Unix epoch (1 Jan 1970)
                                                 // If pulse times are available in the aquisition system, this field holds
                                                 // those timestamps. Holds wall time otherwise.
 
