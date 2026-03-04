@@ -9,7 +9,7 @@ table Pu00Message {
                                                 // those timestamps. Holds wall time otherwise.
 
     period_number : uint;                       // Period number into which this pulse was collected
-    proton_charge : float;                      // Proton charge for this frame
+    proton_charge : float;                      // Proton charge for this frame (uAh per frame)
 }
 
 root_type Pu00Message;
