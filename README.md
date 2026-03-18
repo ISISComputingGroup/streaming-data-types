@@ -99,5 +99,4 @@ and work with the flat buffers union data type in your root element.
 
 ## Useful information:
 
-- [Have CMake download and compile schema](documentation/cmakeCompileSchema.md)
 - [Time formats we use and how to convert between them](documentation/timestamps.md)

@@ -1,0 +1,11 @@
+[package]
+name = "isis_streaming_data_types"
+version = "0.1.0"
+edition = "2024"
+
+[build-dependencies]
+flatc-rust = "0.2.0"
+
+[dependencies]
+flatbuffers = "*"
+anyhow = "*"
