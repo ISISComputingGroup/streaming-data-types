@@ -1,0 +1,99 @@
+[build-system]
+requires = ["setuptools", "setuptools_scm>=8"]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+name = "isis_streaming_data_types" 
+dynamic = ["version"]
+description = "Python utilities for handling ISIS streamed data"
+readme = "README.md"
+requires-python = ">=3.12"
+license-files = ["LICENSE"]
+
+authors = [
+  {name = "ISIS Experiment Controls", email = "ISISExperimentControls@stfc.ac.uk" }
+]
+maintainers = [
+  {name = "ISIS Experiment Controls", email = "ISISExperimentControls@stfc.ac.uk" }
+]
+
+# Classifiers help users find your project by categorizing it.
+#
+# For a list of valid classifiers, see https://pypi.org/classifiers/
+classifiers = [
+  # How mature is this project? Common values are
+  #   3 - Alpha
+  #   4 - Beta
+  #   5 - Production/Stable
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+
+  # Specify the Python versions you support here. In particular, ensure
+  # that you indicate you support Python 3. These classifiers are *not*
+  # checked by "pip install". See instead "requires-python" key in this file.
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Programming Language :: Python :: 3 :: Only",
+]
+
+dependencies = [
+  "flatbuffers",
+  "numpy>2"
+]
+
+[project.optional-dependencies]
+dev = [
+  "ruff>=0.8",
+  "pyright",
+  "pytest",
+  "pytest-cov",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/isiscomputinggroup/isis_streaming_data_types"
+"Bug Reports" = "https://github.com/isiscomputinggroup/isis_streaming_data_types/issues"
+"Source" = "https://github.com/isiscomputinggroup/isis_streaming_data_types"
+
+[tool.pytest.ini_options]
+testpaths = "tests"
+asyncio_mode = "auto"
+addopts = "--cov --cov-report=html -vv"
+
+[tool.coverage.run]
+branch = true
+source = ["src"]
+
+[tool.coverage.report]
+fail_under = 100
+exclude_lines = [
+  "pragma: no cover",
+  "if TYPE_CHECKING:",
+  "if typing.TYPE_CHECKING:",
+  "@abstractmethod",
+]
+
+[tool.coverage.html]
+directory = "coverage_html_report"
+
+[tool.pyright]
+include = ["src", "tests"]
+reportConstantRedefinition = true
+reportDeprecated = true
+reportInconsistentConstructor = true
+reportMissingParameterType = true
+reportMissingTypeArgument = true
+reportUnnecessaryCast = true
+reportUnnecessaryComparison = true
+reportUnnecessaryContains = true
+reportUnnecessaryIsInstance = true
+reportUntypedBaseClass = true
+reportUntypedClassDecorator = true
+reportUntypedFunctionDecorator = true
+
+[tool.setuptools_scm]
+version_file = "src/streaming_data_types/_version.py"
+
+
