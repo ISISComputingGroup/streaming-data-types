@@ -24,6 +24,7 @@ use crate::flatbuffers_generated::logdata_f144::{f144_LogData, root_as_f_144_log
 use crate::flatbuffers_generated::run_start_pl72::{RunStart, root_as_run_start};
 use crate::flatbuffers_generated::run_stop_6s4t::{RunStop, root_as_run_stop};
 use crate::flatbuffers_generated::status_x5f2::{Status, root_as_status};
+use crate::flatbuffers_generated::units_un00::{Units, root_as_units};
 use flatbuffers::InvalidFlatbuffer;
 
 #[allow(clippy::all)]
@@ -50,6 +51,7 @@ pub enum DeserializedMessage<'a> {
     ForwarderConfigFc00(fc00_ConfigUpdate<'a>),
     AlarmAl00(Alarm<'a>),
     DataArrayDa00(da00_DataArray<'a>),
+    UnitsUn00(Units<'a>),
 }
 
 /// Error raised from `deserialize_message` describing why a message
@@ -113,6 +115,9 @@ pub fn deserialize_message(data: &[u8]) -> Result<DeserializedMessage<'_>, Deser
         Some(b"al00") => Ok(DeserializedMessage::AlarmAl00(root_as_alarm(data)?)),
         Some(b"da00") => Ok(DeserializedMessage::DataArrayDa00(
             root_as_da_00_data_array(data)?,
+        )),
+        Some(b"un00") => Ok(DeserializedMessage::UnitsUn00(
+            root_as_units(data)?,
         )),
         _ => Err(DeserializationError::UnsupportedSchema(
             "Unknown message type passed to deserialize".to_owned(),
