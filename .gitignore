@@ -137,4 +137,3 @@ dmypy.json
 .vscode
 
 python/src/streaming_data_types/_version.py
-rust/src/flatbuffers_generated
