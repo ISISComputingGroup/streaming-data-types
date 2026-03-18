@@ -1,11 +1,12 @@
 [package]
 name = "isis_streaming_data_types"
-version = "0.1.0"
+version = "0.0.0"
 edition = "2024"
-
-[build-dependencies]
-flatc-rust = "0.2.0"
+description = "Streaming data types for the ISIS Neutron & Muon Source"
+license-file = "../LICENSE"
+documentation = "https://github.com/isisComputingGroup/streaming-data-types"
+homepage = "https://github.com/isisComputingGroup/streaming-data-types"
+repository = "https://github.com/isisComputingGroup/streaming-data-types"
 
 [dependencies]
 flatbuffers = "*"
-anyhow = "*"

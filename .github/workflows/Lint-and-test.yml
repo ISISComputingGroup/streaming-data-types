@@ -6,17 +6,11 @@ name: Python application
 on:
   workflow_call:
   push:
-    branches: [ "main" ]
+    branches: [ "master" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "master" ]
 
 jobs:
-  call-workflow:
-    uses: ISISComputingGroup/reusable-workflows/.github/workflows/linters.yml@main
-    with:
-      compare-branch: origin/main
-      python-ver: '3.13'
-      runs-on: 'ubuntu-latest'
   tests:
     strategy:
         matrix:
@@ -31,13 +25,21 @@ jobs:
         python-version: ${{ matrix.version }}
     - name: Install dependencies
       run: uv sync --all-extras --dev
+      working-directory: python
+    - name: Ruff format
+      run: uv run ruff format --check
+      working-directory: python
+    - name: Ruff check
+      run: uv run ruff check
+      working-directory: python
     - name: Test with pytest
       run: uv run pytest tests
+      working-directory: python
   results:
     if: ${{ always() }}
     runs-on: ubuntu-latest
     name: Final Results
-    needs: [tests, call-workflow]
+    needs: [tests]
     steps:
     - run: exit 1
       # see https://stackoverflow.com/a/67532120/4907315

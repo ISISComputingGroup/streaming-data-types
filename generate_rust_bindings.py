@@ -1,11 +1,6 @@
 import os
-import sys
 import shutil
 import subprocess
-
-
-def generate_python_bindings():
-    pass
 
 
 def to_rust_file_name(schema: str):
@@ -50,7 +45,6 @@ def generate_rust_bindings():
 
 def main():
     generate_rust_bindings()
-    generate_python_bindings()
 
 
 if __name__ == "__main__":
