@@ -17,6 +17,7 @@ from streaming_data_types.run_start_pl72 import deserialise_pl72, serialise_pl72
 from streaming_data_types.run_stop_6s4t import deserialise_6s4t, serialise_6s4t
 from streaming_data_types.status_x5f2 import deserialise_x5f2, serialise_x5f2
 from streaming_data_types.units_un00 import serialise_un00, deserialise_un00
+from streaming_data_types.pulse_metadata_pu00 import serialise_pu00, deserialise_pu00
 
 __version__ = version
 
@@ -37,6 +38,7 @@ SERIALISERS = {
     "ad00": serialise_ad00,
     "da00": serialise_da00,
     "un00": serialise_un00,
+    "pu00": serialise_pu00,
 }
 
 
@@ -56,4 +58,5 @@ DESERIALISERS = {
     "ad00": deserialise_ad00,
     "da00": deserialise_da00,
     "un00": deserialise_un00,
+    "pu00": deserialise_pu00,
 }
