@@ -75,7 +75,7 @@ jobs:
     - name: Publish distribution to PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
-        packages-dir: python/
+        packages-dir: python/dist/
 
   publish-to-crates-io:
     name: >-
@@ -84,6 +84,9 @@ jobs:
     if: github.ref_type == 'tag'
     needs: [py-build, rust-build]  # Don't publish anything until both python & rust builds pass...
     steps:
+    - uses: actions/checkout@v6
+    - name: install stable rust
+      run: rustup install stable
     - name: publish
       run: cargo publish --allow-dirty
       env:
