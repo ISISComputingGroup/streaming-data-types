@@ -34,6 +34,7 @@ pub mod flatbuffers_generated;
 
 /// Enum containing all possible messages currently supported by
 /// `deserialize_message`.
+#[derive(Debug, Clone, PartialEq)]
 pub enum DeserializedMessage<'a> {
     EventDataEv44(Event44Message<'a>),
     AreaDetectorAd00(ad00_ADArray<'a>),
@@ -56,6 +57,7 @@ pub enum DeserializedMessage<'a> {
 
 /// Error raised from `deserialize_message` describing why a message
 /// cannot be deserialized
+#[derive(Debug, Eq, PartialEq)]
 pub enum DeserializationError {
     UnsupportedSchema(String),
     InvalidFlatbuffer(InvalidFlatbuffer),
@@ -116,11 +118,51 @@ pub fn deserialize_message(data: &[u8]) -> Result<DeserializedMessage<'_>, Deser
         Some(b"da00") => Ok(DeserializedMessage::DataArrayDa00(
             root_as_da_00_data_array(data)?,
         )),
-        Some(b"un00") => Ok(DeserializedMessage::UnitsUn00(
-            root_as_units(data)?,
-        )),
+        Some(b"un00") => Ok(DeserializedMessage::UnitsUn00(root_as_units(data)?)),
         _ => Err(DeserializationError::UnsupportedSchema(
             "Unknown message type passed to deserialize".to_owned(),
         )),
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::flatbuffers_generated::units_un00::{UnitsArgs, finish_units_buffer};
+    use flatbuffers::FlatBufferBuilder;
+
+    #[test]
+    fn test_deserialize_message() {
+        let mut fbb = FlatBufferBuilder::new();
+        let un00_args = UnitsArgs {
+            source_name: Some(fbb.create_string("Hello")),
+            timestamp: 0,
+            units: Some(fbb.create_string("World")),
+        };
+        let un00 = Units::create(&mut fbb, &un00_args);
+        finish_units_buffer(&mut fbb, un00);
+
+        let deserialized = deserialize_message(fbb.finished_data());
+
+        match deserialized {
+            Ok(DeserializedMessage::UnitsUn00(msg)) => {
+                assert_eq!(msg.source_name(), "Hello");
+                assert_eq!(msg.timestamp(), 0);
+                assert_eq!(msg.units(), Some("World"));
+            }
+            _ => panic!("Failed to deserialize message to correct type"),
+        }
+    }
+
+    #[test]
+    fn test_fail_deserialize_message() {
+        let deserialized = deserialize_message(b"\0\0\0\0\0\0\0\0\0\0\0\0");
+
+        assert_eq!(
+            deserialized,
+            Err(DeserializationError::UnsupportedSchema(
+                "Unknown message type passed to deserialize".to_owned()
+            ))
+        );
     }
 }
