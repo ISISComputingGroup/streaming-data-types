@@ -38,7 +38,7 @@ jobs:
         run: rustup install stable
         working-directory: rust
       - name: Format check
-        run: cargo fmt check
+        run: cargo fmt --check
         working-directory: rust
       - name: Clippy
         run: cargo clippy -- --deny warnings

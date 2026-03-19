@@ -1,4 +1,4 @@
-name: Publish Python distribution to PyPI
+name: Publish
 on: push
 jobs:
   py-build:
@@ -36,7 +36,7 @@ jobs:
       - name: install stable rust
         run: rustup install stable
       - name: Format check
-        run: cargo fmt check
+        run: cargo fmt --check
       - name: Clippy
         run: cargo clippy -- --deny warnings
       - name: Tests
@@ -71,11 +71,24 @@ jobs:
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
         packages-dir: python/
+
+  publish-to-crates-io:
+    name: >-
+      Publish Rust distribution to crates.io
+    runs-on: ubuntu-latest
+    if: github.ref_type == 'tag'
+    needs: [py-build, rust-build]  # Don't publish anything until both python & rust builds pass...
+    steps:
+    - name: publish
+      run: cargo publish --allow-dirty
+      env:
+        CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+
   github-release:
     name: >-
       Sign the Python distribution with Sigstore
       and upload them to GitHub Release
-    needs: [py-build, publish-to-pypi]
+    needs: [py-build, publish-to-pypi, rust-build, publish-to-crates-io]
     runs-on: ubuntu-latest
 
     permissions:
