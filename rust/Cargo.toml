@@ -9,4 +9,4 @@ homepage = "https://github.com/isisComputingGroup/streaming-data-types"
 repository = "https://github.com/isisComputingGroup/streaming-data-types"
 
 [dependencies]
-flatbuffers = "*"
+flatbuffers = "25.12.19"
