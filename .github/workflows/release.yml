@@ -37,18 +37,23 @@ jobs:
         run: rustup install stable
       - name: Format check
         run: cargo fmt --check
+        working-directory: rust
       - name: Clippy
         run: cargo clippy -- --deny warnings
+        working-directory: rust
       - name: Tests
         run: cargo test
+        working-directory: rust
       - name: set version
         run: |
           export VERSION=${{ github.ref_name }}
           sed -i "s/0.0.0/$VERSION/g" Cargo.toml
+        working-directory: rust
       - name: publish
         run: cargo publish --dry-run --allow-dirty
         env:
           CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+        working-directory: rust
 
   publish-to-pypi:
     name: >-
@@ -83,6 +88,7 @@ jobs:
       run: cargo publish --allow-dirty
       env:
         CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+      working-directory: rust
 
   github-release:
     name: >-
