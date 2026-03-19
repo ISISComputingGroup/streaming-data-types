@@ -21,6 +21,7 @@ use crate::flatbuffers_generated::forwarder_config_fc00::{
 };
 use crate::flatbuffers_generated::json_json::{JsonData, root_as_json_data};
 use crate::flatbuffers_generated::logdata_f144::{f144_LogData, root_as_f_144_log_data};
+use crate::flatbuffers_generated::pulse_metadata_pu00::{Pu00Message, root_as_pu_00_message};
 use crate::flatbuffers_generated::run_start_pl72::{RunStart, root_as_run_start};
 use crate::flatbuffers_generated::run_stop_6s4t::{RunStop, root_as_run_stop};
 use crate::flatbuffers_generated::status_x5f2::{Status, root_as_status};
@@ -37,6 +38,7 @@ pub mod flatbuffers_generated;
 #[derive(Debug, Clone, PartialEq)]
 pub enum DeserializedMessage<'a> {
     EventDataEv44(Event44Message<'a>),
+    PulseMetadataPu00(Pu00Message<'a>),
     AreaDetectorAd00(ad00_ADArray<'a>),
     RunStartPl72(RunStart<'a>),
     RunStop6s4t(RunStop<'a>),
@@ -82,6 +84,9 @@ pub fn deserialize_message(data: &[u8]) -> Result<DeserializedMessage<'_>, Deser
     match get_schema_id(data) {
         Some(b"ev44") => Ok(DeserializedMessage::EventDataEv44(
             root_as_event_44_message(data)?,
+        )),
+        Some(b"pu00") => Ok(DeserializedMessage::PulseMetadataPu00(
+            root_as_pu_00_message(data)?,
         )),
         Some(b"ad00") => Ok(DeserializedMessage::AreaDetectorAd00(
             root_as_ad_00_adarray(data)?,
