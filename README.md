@@ -1,4 +1,5 @@
 # Streaming Data Types
+[![Crates.io](https://img.shields.io/crates/v/isis_streaming_data_types.svg)](https://crates.io/crates/isis_streaming_data_types) [![PyPI](https://img.shields.io/pypi/v/isis_streaming_data_types.svg)](https://pypi.org/project/isis_streaming_data_types/)
 
 FlatBuffers is the format chosen for the ISIS data streaming system, derived from the
 [ESS messaging system](https://github.com/ess-dmsc/streaming-data-types).
