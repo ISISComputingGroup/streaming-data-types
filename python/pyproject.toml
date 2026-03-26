@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "isis_streaming_data_types" 
 dynamic = ["version"]
 description = "Python utilities for handling ISIS streamed data"
-readme = "../README.md"
+readme = "README.md"
 requires-python = ">=3.12"
 license-files = ["LICENSE"]
 
