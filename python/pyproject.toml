@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "isis_streaming_data_types" 
 dynamic = ["version"]
 description = "Python utilities for handling ISIS streamed data"
-readme = "README.md"
+readme = "../README.md"
 requires-python = ">=3.12"
 license-files = ["LICENSE"]
 
@@ -52,9 +52,9 @@ dev = [
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/isiscomputinggroup/isis_streaming_data_types"
-"Bug Reports" = "https://github.com/isiscomputinggroup/isis_streaming_data_types/issues"
-"Source" = "https://github.com/isiscomputinggroup/isis_streaming_data_types"
+"Homepage" = "https://github.com/isiscomputinggroup/streaming_data_types"
+"Bug Reports" = "https://github.com/isiscomputinggroup/streaming_data_types/issues"
+"Source" = "https://github.com/isiscomputinggroup/streaming_data_types"
 
 [tool.pytest.ini_options]
 testpaths = "tests"
