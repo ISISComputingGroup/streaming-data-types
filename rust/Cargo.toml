@@ -7,6 +7,7 @@ license-file = "../LICENSE"
 documentation = "https://github.com/isisComputingGroup/streaming-data-types"
 homepage = "https://github.com/isisComputingGroup/streaming-data-types"
 repository = "https://github.com/isisComputingGroup/streaming-data-types"
+readme = "../README.md"
 
 [dependencies]
 flatbuffers = "25.12.19"
