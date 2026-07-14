@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
     - name: Set up Python
       uses: actions/setup-python@v6
       with:
@@ -32,7 +32,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: install stable rust
         run: rustup install stable
       - name: Format check
@@ -84,7 +84,7 @@ jobs:
     if: github.ref_type == 'tag'
     needs: [py-build, rust-build]  # Don't publish anything until both python & rust builds pass...
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
     - name: install stable rust
       run: rustup install stable
     - name: set version
