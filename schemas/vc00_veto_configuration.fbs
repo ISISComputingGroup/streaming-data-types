@@ -1,0 +1,12 @@
+// Schema for showing the current veto configuration.
+// This contains essentially a bitwise OR of soft and hard vetoes.
+
+file_identifier "vc00";
+
+table Vetoes {
+  timestamp: long;                       // Nanoseconds since UNIX epoch
+  vetoes: uint;                          // A bit mask of the configured vetoes. For the individual bits see 
+                                         // https://isiscomputinggroup.github.io/ibex_developers_manual/specific_iocs/datastreaming/Datastreaming-vetos
+}
+
+root_type Vetoes;
