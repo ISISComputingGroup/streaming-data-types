@@ -26,11 +26,12 @@ use crate::flatbuffers_generated::run_start_pl72::{RunStart, root_as_run_start};
 use crate::flatbuffers_generated::run_stop_6s4t::{RunStop, root_as_run_stop};
 use crate::flatbuffers_generated::status_x5f2::{Status, root_as_status};
 use crate::flatbuffers_generated::units_un00::{Units, root_as_units};
+use crate::flatbuffers_generated::veto_configuration_vc00::{Vetoes, root_as_vetoes};
 use flatbuffers::InvalidFlatbuffer;
 
 #[allow(clippy::all)]
 #[rustfmt::skip]
-#[allow(dead_code, unused, non_snake_case, non_camel_case_types, non_upper_case_globals)]
+#[allow(dead_code, unused, non_snake_case, non_camel_case_types, non_upper_case_globals, mismatched_lifetime_syntaxes)]
 pub mod flatbuffers_generated;
 
 /// Enum containing all possible messages currently supported by
@@ -55,6 +56,7 @@ pub enum DeserializedMessage<'a> {
     AlarmAl00(Alarm<'a>),
     DataArrayDa00(da00_DataArray<'a>),
     UnitsUn00(Units<'a>),
+    VetoesVc00(Vetoes<'a>),
 }
 
 /// Error raised from `deserialize_message` describing why a message
@@ -124,6 +126,7 @@ pub fn deserialize_message(data: &[u8]) -> Result<DeserializedMessage<'_>, Deser
             root_as_da_00_data_array(data)?,
         )),
         Some(b"un00") => Ok(DeserializedMessage::UnitsUn00(root_as_units(data)?)),
+        Some(b"vc00") => Ok(DeserializedMessage::VetoesVc00(root_as_vetoes(data)?)),
         _ => Err(DeserializationError::UnsupportedSchema(
             "Unknown message type passed to deserialize".to_owned(),
         )),
