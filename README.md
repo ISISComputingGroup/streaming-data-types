@@ -23,8 +23,8 @@ FlatBuffers is the format chosen for the ISIS data streaming system, derived fro
 | fc00 | `fc00_forwarder_config.fbs     ` | Configuration update for Forwarder                                                            |
 | al00 | `al00_alarm.fbs                ` | Generic alarm schema for EPICS, NICOS, etc.                                                   |
 | da00 | `da00_dataarray.fbs            ` | Pseudo-scipp DataArray with time-dependent and constant Variables                             |
-| un00 | `un00_units.fbs            `     | Engineering units update                                                                      |
-| vc00 | `vc00_vetoes.fbs            `    | Veto configuration update                                                                     |
+| un00 | `un00_units.fbs                ` | Engineering units update                                                                      |
+| vc00 | `vc00_veto_configuration.fbs   ` | Veto configuration update                                                                     |
 
 
 ## Adding new schemas
