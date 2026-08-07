@@ -5,8 +5,8 @@ file_identifier "vc00";
 
 table Vetoes {
   timestamp: long;                       // Nanoseconds since UNIX epoch
-  vetoes: uint;                          // A bit mask of the configured vetoes. For the individual bits see 
-                                         // https://isiscomputinggroup.github.io/ibex_developers_manual/specific_iocs/datastreaming/Datastreaming-vetos
+  vetoes: uint;                          // A bit mask of the configured vetoes.
+  veto_names: [string];                // The configured veto names to be used by downstream consumers.
 }
 
 root_type Vetoes;
