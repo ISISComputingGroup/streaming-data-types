@@ -15,7 +15,7 @@ table RunStop {              //  *Mantid*    // *File Writer* // *Description*
     job_id : string;         //  Unused      //  Required     // Uuid of the job that is to get a new stop time. 
     service_id : string;     //  Unused      //  Optional     // The identifier for the instance of the file-writer that should handle this command
     command_id : string;     //  Unused      //  Required     // Command uuid for uniquely identifying the stop command.
-    gps_stop_time : uint64 = null; // Unused //  Required     // milliseconds since Unix epoch (1 Jan 1970), according to the GPS clock used to timestamp events.
+    gps_stop_time : uint64 = null; // Unused //  Required     // nanoseconds since Unix epoch (1 Jan 1970), according to the GPS clock used to timestamp events.
 }
 
 root_type RunStop;

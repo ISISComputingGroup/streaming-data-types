@@ -38,6 +38,8 @@ def serialise_pl72(
     metadata: str = "{}",
     detector_spectrum_map: Optional[DetectorSpectrumMap] = None,
     control_topic: str = "",
+    gps_start_time: Union[int, datetime, None] = None,
+    gps_stop_time: Union[int, datetime, None] = None,
 ) -> bytes:
     builder = flatbuffers.Builder(512)
     builder.ForceDefaults(True)
@@ -102,6 +104,16 @@ def serialise_pl72(
         RunStart.RunStartAddDetectorSpectrumMap(builder, detector_spectrum_map_offset)
     RunStart.RunStartAddControlTopic(builder, control_topic_offset)
 
+    if gps_start_time is not None:
+        if type(gps_start_time) is datetime:
+            gps_start_time = int(gps_start_time.timestamp() * 1_000_000_000)
+        RunStart.RunStartAddGpsStartTime(builder, gps_start_time)
+
+    if gps_stop_time is not None:
+        if type(gps_stop_time) is datetime:
+            gps_stop_time = int(gps_stop_time.timestamp() * 1_000_000_000)
+        RunStart.RunStartAddGpsStopTime(builder, gps_stop_time)
+
     run_start_message = RunStart.RunStartEnd(builder)
 
     builder.Finish(run_start_message, file_identifier=FILE_IDENTIFIER)
@@ -121,6 +133,8 @@ class RunStartInfo(NamedTuple):
     metadata: str = ""
     detector_spectrum_map: Optional[DetectorSpectrumMap] = None
     control_topic: str = ""
+    gps_start_time: Union[int, None] = None
+    gps_stop_time: Union[int, None] = None
 
 
 def deserialise_pl72(buffer: Union[bytearray, bytes]) -> RunStartInfo:
@@ -136,6 +150,8 @@ def deserialise_pl72(buffer: Union[bytearray, bytes]) -> RunStartInfo:
     run_name = run_start.RunName() if run_start.RunName() else b""
     metadata = run_start.Metadata() if run_start.Metadata() else b""
     control_topic = run_start.ControlTopic() if run_start.ControlTopic() else b""
+    gps_start_time = run_start.GpsStartTime()
+    gps_stop_time = run_start.GpsStopTime()
 
     detector_spectrum_map = None
     det_spec_map_buf = run_start.DetectorSpectrumMap()
@@ -159,4 +175,6 @@ def deserialise_pl72(buffer: Union[bytearray, bytes]) -> RunStartInfo:
         metadata=metadata.decode(),
         detector_spectrum_map=detector_spectrum_map,
         control_topic=control_topic.decode(),
+        gps_start_time=gps_start_time,
+        gps_stop_time=gps_stop_time,
     )

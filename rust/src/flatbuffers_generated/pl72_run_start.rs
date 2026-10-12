@@ -162,6 +162,8 @@ impl<'a> RunStart<'a> {
   pub const VT_DETECTOR_SPECTRUM_MAP: ::flatbuffers::VOffsetT = 24;
   pub const VT_METADATA: ::flatbuffers::VOffsetT = 26;
   pub const VT_CONTROL_TOPIC: ::flatbuffers::VOffsetT = 28;
+  pub const VT_GPS_START_TIME: ::flatbuffers::VOffsetT = 30;
+  pub const VT_GPS_STOP_TIME: ::flatbuffers::VOffsetT = 32;
 
   #[inline]
   pub unsafe fn init_from_table(table: ::flatbuffers::Table<'a>) -> Self {
@@ -173,6 +175,8 @@ impl<'a> RunStart<'a> {
     args: &'args RunStartArgs<'args>
   ) -> ::flatbuffers::WIPOffset<RunStart<'bldr>> {
     let mut builder = RunStartBuilder::new(_fbb);
+    if let Some(x) = args.gps_stop_time { builder.add_gps_stop_time(x); }
+    if let Some(x) = args.gps_start_time { builder.add_gps_start_time(x); }
     builder.add_stop_time(args.stop_time);
     builder.add_start_time(args.start_time);
     if let Some(x) = args.control_topic { builder.add_control_topic(x); }
@@ -281,6 +285,20 @@ impl<'a> RunStart<'a> {
     // which contains a valid value in this slot
     unsafe { self._tab.get::<::flatbuffers::ForwardsUOffset<&str>>(RunStart::VT_CONTROL_TOPIC, None)}
   }
+  #[inline]
+  pub fn gps_start_time(&self) -> Option<u64> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<u64>(RunStart::VT_GPS_START_TIME, None)}
+  }
+  #[inline]
+  pub fn gps_stop_time(&self) -> Option<u64> {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<u64>(RunStart::VT_GPS_STOP_TIME, None)}
+  }
 }
 
 impl ::flatbuffers::Verifiable for RunStart<'_> {
@@ -302,6 +320,8 @@ impl ::flatbuffers::Verifiable for RunStart<'_> {
      .visit_field::<::flatbuffers::ForwardsUOffset<SpectraDetectorMapping>>("detector_spectrum_map", Self::VT_DETECTOR_SPECTRUM_MAP, false)?
      .visit_field::<::flatbuffers::ForwardsUOffset<&str>>("metadata", Self::VT_METADATA, false)?
      .visit_field::<::flatbuffers::ForwardsUOffset<&str>>("control_topic", Self::VT_CONTROL_TOPIC, false)?
+     .visit_field::<u64>("gps_start_time", Self::VT_GPS_START_TIME, false)?
+     .visit_field::<u64>("gps_stop_time", Self::VT_GPS_STOP_TIME, false)?
      .finish();
     Ok(())
   }
@@ -320,6 +340,8 @@ pub struct RunStartArgs<'a> {
     pub detector_spectrum_map: Option<::flatbuffers::WIPOffset<SpectraDetectorMapping<'a>>>,
     pub metadata: Option<::flatbuffers::WIPOffset<&'a str>>,
     pub control_topic: Option<::flatbuffers::WIPOffset<&'a str>>,
+    pub gps_start_time: Option<u64>,
+    pub gps_stop_time: Option<u64>,
 }
 impl<'a> Default for RunStartArgs<'a> {
   #[inline]
@@ -338,6 +360,8 @@ impl<'a> Default for RunStartArgs<'a> {
       detector_spectrum_map: None,
       metadata: None,
       control_topic: None,
+      gps_start_time: None,
+      gps_stop_time: None,
     }
   }
 }
@@ -400,6 +424,14 @@ impl<'a: 'b, 'b, A: ::flatbuffers::Allocator + 'a> RunStartBuilder<'a, 'b, A> {
     self.fbb_.push_slot_always::<::flatbuffers::WIPOffset<_>>(RunStart::VT_CONTROL_TOPIC, control_topic);
   }
   #[inline]
+  pub fn add_gps_start_time(&mut self, gps_start_time: u64) {
+    self.fbb_.push_slot_always::<u64>(RunStart::VT_GPS_START_TIME, gps_start_time);
+  }
+  #[inline]
+  pub fn add_gps_stop_time(&mut self, gps_stop_time: u64) {
+    self.fbb_.push_slot_always::<u64>(RunStart::VT_GPS_STOP_TIME, gps_stop_time);
+  }
+  #[inline]
   pub fn new(_fbb: &'b mut ::flatbuffers::FlatBufferBuilder<'a, A>) -> RunStartBuilder<'a, 'b, A> {
     let start = _fbb.start_table();
     RunStartBuilder {
@@ -430,6 +462,8 @@ impl ::core::fmt::Debug for RunStart<'_> {
       ds.field("detector_spectrum_map", &self.detector_spectrum_map());
       ds.field("metadata", &self.metadata());
       ds.field("control_topic", &self.control_topic());
+      ds.field("gps_start_time", &self.gps_start_time());
+      ds.field("gps_stop_time", &self.gps_stop_time());
       ds.finish()
   }
 }

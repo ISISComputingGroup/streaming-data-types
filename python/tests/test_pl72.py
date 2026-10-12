@@ -26,6 +26,8 @@ class TestSerialisationPl72:
             np.array([4, 5, 6]), np.array([0, 1, 2]), 3
         ),
         "control_topic": "some_topic_name",
+        "gps_start_time": 123456789,
+        "gps_stop_time": 9876543210,
     }
 
     def test_serialises_and_deserialises_pl72_message_correctly(self):
@@ -60,6 +62,8 @@ class TestSerialisationPl72:
             self.original_entry["detector_spectrum_map"].detector_ids,
         )
         assert deserialised_tuple.control_topic == self.original_entry["control_topic"]
+        assert deserialised_tuple.gps_start_time == self.original_entry["gps_start_time"]
+        assert deserialised_tuple.gps_stop_time == self.original_entry["gps_stop_time"]
 
     def test_if_buffer_has_wrong_id_then_throws(self):
         buf = serialise_pl72(**self.original_entry)
