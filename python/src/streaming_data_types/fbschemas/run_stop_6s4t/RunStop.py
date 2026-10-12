@@ -12,11 +12,16 @@ class RunStop(object):
     __slots__ = ["_tab"]
 
     @classmethod
-    def GetRootAsRunStop(cls, buf, offset):
+    def GetRootAs(cls, buf, offset=0):
         n = flatbuffers.encode.Get(flatbuffers.packer.uoffset, buf, offset)
         x = RunStop()
         x.Init(buf, n + offset)
         return x
+
+    @classmethod
+    def GetRootAsRunStop(cls, buf, offset=0):
+        """This method is deprecated. Please switch to GetRootAs."""
+        return cls.GetRootAs(buf, offset)
 
     @classmethod
     def RunStopBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
@@ -32,9 +37,7 @@ class RunStop(object):
     def StopTime(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
         if o != 0:
-            return self._tab.Get(
-                flatbuffers.number_types.Uint64Flags, o + self._tab.Pos
-            )
+            return self._tab.Get(flatbuffers.number_types.Uint64Flags, o + self._tab.Pos)
         return 0
 
     # RunStop
@@ -65,13 +68,28 @@ class RunStop(object):
             return self._tab.String(o + self._tab.Pos)
         return None
 
+    # RunStop
+    def GpsStopTime(self):
+        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(14))
+        if o != 0:
+            return self._tab.Get(flatbuffers.number_types.Uint64Flags, o + self._tab.Pos)
+        return None
+
 
 def RunStopStart(builder):
-    builder.StartObject(5)
+    builder.StartObject(6)
+
+
+def Start(builder):
+    RunStopStart(builder)
 
 
 def RunStopAddStopTime(builder, stopTime):
     builder.PrependUint64Slot(0, stopTime, 0)
+
+
+def AddStopTime(builder, stopTime):
+    RunStopAddStopTime(builder, stopTime)
 
 
 def RunStopAddRunName(builder, runName):
@@ -80,10 +98,16 @@ def RunStopAddRunName(builder, runName):
     )
 
 
+def AddRunName(builder, runName):
+    RunStopAddRunName(builder, runName)
+
+
 def RunStopAddJobId(builder, jobId):
-    builder.PrependUOffsetTRelativeSlot(
-        2, flatbuffers.number_types.UOffsetTFlags.py_type(jobId), 0
-    )
+    builder.PrependUOffsetTRelativeSlot(2, flatbuffers.number_types.UOffsetTFlags.py_type(jobId), 0)
+
+
+def AddJobId(builder, jobId):
+    RunStopAddJobId(builder, jobId)
 
 
 def RunStopAddServiceId(builder, serviceId):
@@ -92,11 +116,31 @@ def RunStopAddServiceId(builder, serviceId):
     )
 
 
+def AddServiceId(builder, serviceId):
+    RunStopAddServiceId(builder, serviceId)
+
+
 def RunStopAddCommandId(builder, commandId):
     builder.PrependUOffsetTRelativeSlot(
         4, flatbuffers.number_types.UOffsetTFlags.py_type(commandId), 0
     )
 
 
+def AddCommandId(builder, commandId):
+    RunStopAddCommandId(builder, commandId)
+
+
+def RunStopAddGpsStopTime(builder, gpsStopTime):
+    builder.PrependUint64Slot(5, gpsStopTime, None)
+
+
+def AddGpsStopTime(builder, gpsStopTime):
+    RunStopAddGpsStopTime(builder, gpsStopTime)
+
+
 def RunStopEnd(builder):
     return builder.EndObject()
+
+
+def End(builder):
+    return RunStopEnd(builder)

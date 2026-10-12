@@ -12,16 +12,21 @@ class RunStart(object):
     __slots__ = ["_tab"]
 
     @classmethod
-    def GetRootAsRunStart(cls, buf, offset):
+    def GetRootAs(cls, buf, offset=0):
         n = flatbuffers.encode.Get(flatbuffers.packer.uoffset, buf, offset)
         x = RunStart()
         x.Init(buf, n + offset)
         return x
 
     @classmethod
+    def GetRootAsRunStart(cls, buf, offset=0):
+        """This method is deprecated. Please switch to GetRootAs."""
+        return cls.GetRootAs(buf, offset)
+
+    @classmethod
     def RunStartBufferHasIdentifier(cls, buf, offset, size_prefixed=False):
         return flatbuffers.util.BufferHasIdentifier(
-            buf, offset, b"\x70\x6C\x37\x32", size_prefixed=size_prefixed
+            buf, offset, b"\x70\x6c\x37\x32", size_prefixed=size_prefixed
         )
 
     # RunStart
@@ -32,18 +37,14 @@ class RunStart(object):
     def StartTime(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
         if o != 0:
-            return self._tab.Get(
-                flatbuffers.number_types.Uint64Flags, o + self._tab.Pos
-            )
+            return self._tab.Get(flatbuffers.number_types.Uint64Flags, o + self._tab.Pos)
         return 0
 
     # RunStart
     def StopTime(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
         if o != 0:
-            return self._tab.Get(
-                flatbuffers.number_types.Uint64Flags, o + self._tab.Pos
-            )
+            return self._tab.Get(flatbuffers.number_types.Uint64Flags, o + self._tab.Pos)
         return 0
 
     # RunStart
@@ -99,9 +100,7 @@ class RunStart(object):
     def NPeriods(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(22))
         if o != 0:
-            return self._tab.Get(
-                flatbuffers.number_types.Uint32Flags, o + self._tab.Pos
-            )
+            return self._tab.Get(flatbuffers.number_types.Uint32Flags, o + self._tab.Pos)
         return 1
 
     # RunStart
@@ -130,17 +129,43 @@ class RunStart(object):
             return self._tab.String(o + self._tab.Pos)
         return None
 
+    # RunStart
+    def GpsStartTime(self):
+        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(30))
+        if o != 0:
+            return self._tab.Get(flatbuffers.number_types.Uint64Flags, o + self._tab.Pos)
+        return None
+
+    # RunStart
+    def GpsStopTime(self):
+        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(32))
+        if o != 0:
+            return self._tab.Get(flatbuffers.number_types.Uint64Flags, o + self._tab.Pos)
+        return None
+
 
 def RunStartStart(builder):
-    builder.StartObject(13)
+    builder.StartObject(15)
+
+
+def Start(builder):
+    RunStartStart(builder)
 
 
 def RunStartAddStartTime(builder, startTime):
     builder.PrependUint64Slot(0, startTime, 0)
 
 
+def AddStartTime(builder, startTime):
+    RunStartAddStartTime(builder, startTime)
+
+
 def RunStartAddStopTime(builder, stopTime):
     builder.PrependUint64Slot(1, stopTime, 0)
+
+
+def AddStopTime(builder, stopTime):
+    RunStartAddStopTime(builder, stopTime)
 
 
 def RunStartAddRunName(builder, runName):
@@ -149,10 +174,18 @@ def RunStartAddRunName(builder, runName):
     )
 
 
+def AddRunName(builder, runName):
+    RunStartAddRunName(builder, runName)
+
+
 def RunStartAddInstrumentName(builder, instrumentName):
     builder.PrependUOffsetTRelativeSlot(
         3, flatbuffers.number_types.UOffsetTFlags.py_type(instrumentName), 0
     )
+
+
+def AddInstrumentName(builder, instrumentName):
+    RunStartAddInstrumentName(builder, instrumentName)
 
 
 def RunStartAddNexusStructure(builder, nexusStructure):
@@ -161,10 +194,16 @@ def RunStartAddNexusStructure(builder, nexusStructure):
     )
 
 
+def AddNexusStructure(builder, nexusStructure):
+    RunStartAddNexusStructure(builder, nexusStructure)
+
+
 def RunStartAddJobId(builder, jobId):
-    builder.PrependUOffsetTRelativeSlot(
-        5, flatbuffers.number_types.UOffsetTFlags.py_type(jobId), 0
-    )
+    builder.PrependUOffsetTRelativeSlot(5, flatbuffers.number_types.UOffsetTFlags.py_type(jobId), 0)
+
+
+def AddJobId(builder, jobId):
+    RunStartAddJobId(builder, jobId)
 
 
 def RunStartAddBroker(builder, broker):
@@ -173,10 +212,18 @@ def RunStartAddBroker(builder, broker):
     )
 
 
+def AddBroker(builder, broker):
+    RunStartAddBroker(builder, broker)
+
+
 def RunStartAddServiceId(builder, serviceId):
     builder.PrependUOffsetTRelativeSlot(
         7, flatbuffers.number_types.UOffsetTFlags.py_type(serviceId), 0
     )
+
+
+def AddServiceId(builder, serviceId):
+    RunStartAddServiceId(builder, serviceId)
 
 
 def RunStartAddFilename(builder, filename):
@@ -185,8 +232,16 @@ def RunStartAddFilename(builder, filename):
     )
 
 
+def AddFilename(builder, filename):
+    RunStartAddFilename(builder, filename)
+
+
 def RunStartAddNPeriods(builder, nPeriods):
     builder.PrependUint32Slot(9, nPeriods, 1)
+
+
+def AddNPeriods(builder, nPeriods):
+    RunStartAddNPeriods(builder, nPeriods)
 
 
 def RunStartAddDetectorSpectrumMap(builder, detectorSpectrumMap):
@@ -195,10 +250,18 @@ def RunStartAddDetectorSpectrumMap(builder, detectorSpectrumMap):
     )
 
 
+def AddDetectorSpectrumMap(builder, detectorSpectrumMap):
+    RunStartAddDetectorSpectrumMap(builder, detectorSpectrumMap)
+
+
 def RunStartAddMetadata(builder, metadata):
     builder.PrependUOffsetTRelativeSlot(
         11, flatbuffers.number_types.UOffsetTFlags.py_type(metadata), 0
     )
+
+
+def AddMetadata(builder, metadata):
+    RunStartAddMetadata(builder, metadata)
 
 
 def RunStartAddControlTopic(builder, controlTopic):
@@ -207,5 +270,29 @@ def RunStartAddControlTopic(builder, controlTopic):
     )
 
 
+def AddControlTopic(builder, controlTopic):
+    RunStartAddControlTopic(builder, controlTopic)
+
+
+def RunStartAddGpsStartTime(builder, gpsStartTime):
+    builder.PrependUint64Slot(13, gpsStartTime, None)
+
+
+def AddGpsStartTime(builder, gpsStartTime):
+    RunStartAddGpsStartTime(builder, gpsStartTime)
+
+
+def RunStartAddGpsStopTime(builder, gpsStopTime):
+    builder.PrependUint64Slot(14, gpsStopTime, None)
+
+
+def AddGpsStopTime(builder, gpsStopTime):
+    RunStartAddGpsStopTime(builder, gpsStopTime)
+
+
 def RunStartEnd(builder):
     return builder.EndObject()
+
+
+def End(builder):
+    return RunStartEnd(builder)
