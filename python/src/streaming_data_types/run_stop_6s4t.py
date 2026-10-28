@@ -15,6 +15,7 @@ def serialise_6s4t(
     service_id: str = "",
     command_id: str = "",
     stop_time: Union[int, datetime, None] = None,
+    abort: bool = False,
 ) -> bytes:
     builder = flatbuffers.Builder(500)
     builder.ForceDefaults(True)
@@ -38,6 +39,7 @@ def serialise_6s4t(
     RunStop.RunStopAddRunName(builder, run_name_offset)
     RunStop.RunStopAddStopTime(builder, stop_time)
     RunStop.RunStopAddCommandId(builder, command_id_offset)
+    RunStop.RunStopAddAbort(builder, abort)
 
     run_stop_message = RunStop.RunStopEnd(builder)
     builder.Finish(run_stop_message, file_identifier=FILE_IDENTIFIER)
@@ -53,6 +55,7 @@ RunStopInfo = NamedTuple(
         ("job_id", str),
         ("service_id", str),
         ("command_id", str),
+        ("abort", bool),
     ),
 )
 
@@ -66,6 +69,7 @@ def deserialise_6s4t(buffer: Union[bytearray, bytes]) -> RunStopInfo:
     run_name = run_stop.RunName() if run_stop.RunName() else b""
     stop_time = run_stop.StopTime()
     command_id = run_stop.CommandId()
+    abort = run_stop.Abort()
 
     return RunStopInfo(
         stop_time=stop_time,
@@ -73,4 +77,5 @@ def deserialise_6s4t(buffer: Union[bytearray, bytes]) -> RunStopInfo:
         job_id=job_id.decode(),
         service_id=service_id.decode(),
         command_id=command_id.decode(),
+        abort=abort,
     )

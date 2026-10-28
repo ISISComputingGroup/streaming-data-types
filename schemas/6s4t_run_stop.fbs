@@ -15,6 +15,7 @@ table RunStop {              //  *Mantid*    // *File Writer* // *Description*
     job_id : string;         //  Unused      //  Required     // Uuid of the job that is to get a new stop time. 
     service_id : string;     //  Unused      //  Optional     // The identifier for the instance of the file-writer that should handle this command
     command_id : string;     //  Unused      //  Required     // Command uuid for uniquely identifying the stop command.
+    abort : bool = false;    //  Required    //  Required     // Whether to abort this run and stop writing files.
 }
 
 root_type RunStop;
