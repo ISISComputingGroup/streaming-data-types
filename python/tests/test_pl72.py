@@ -26,6 +26,7 @@ class TestSerialisationPl72:
             np.array([4, 5, 6]), np.array([0, 1, 2]), 3
         ),
         "control_topic": "some_topic_name",
+        "n_periods": 69420,
         "gps_start_time": 123456789,
         "gps_stop_time": 9876543210,
     }
@@ -62,6 +63,7 @@ class TestSerialisationPl72:
             self.original_entry["detector_spectrum_map"].detector_ids,
         )
         assert deserialised_tuple.control_topic == self.original_entry["control_topic"]
+        assert deserialised_tuple.n_periods == self.original_entry["n_periods"]
         assert deserialised_tuple.gps_start_time == self.original_entry["gps_start_time"]
         assert deserialised_tuple.gps_stop_time == self.original_entry["gps_stop_time"]
 

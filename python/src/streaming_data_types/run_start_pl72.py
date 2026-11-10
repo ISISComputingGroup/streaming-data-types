@@ -38,6 +38,7 @@ def serialise_pl72(
     metadata: str = "{}",
     detector_spectrum_map: Optional[DetectorSpectrumMap] = None,
     control_topic: str = "",
+    n_periods: int = 1,
     gps_start_time: Union[int, datetime, None] = None,
     gps_stop_time: Union[int, datetime, None] = None,
 ) -> bytes:
@@ -98,7 +99,7 @@ def serialise_pl72(
     RunStart.RunStartAddStopTime(builder, stop_time)
     RunStart.RunStartAddStartTime(builder, start_time)
     RunStart.RunStartAddFilename(builder, filename_offset)
-    RunStart.RunStartAddNPeriods(builder, 1)
+    RunStart.RunStartAddNPeriods(builder, n_periods)
     RunStart.RunStartAddMetadata(builder, metadata_offset)
     if detector_spectrum_map is not None:
         RunStart.RunStartAddDetectorSpectrumMap(builder, detector_spectrum_map_offset)
@@ -128,6 +129,7 @@ class RunStartInfo(NamedTuple):
     nexus_structure: str
     service_id: str
     broker: str
+    n_periods: int    
     run_name: str = ""
     instrument_name: str = ""
     metadata: str = ""
@@ -175,6 +177,7 @@ def deserialise_pl72(buffer: Union[bytearray, bytes]) -> RunStartInfo:
         metadata=metadata.decode(),
         detector_spectrum_map=detector_spectrum_map,
         control_topic=control_topic.decode(),
+        n_periods=run_start.NPeriods(),
         gps_start_time=gps_start_time,
         gps_stop_time=gps_stop_time,
     )

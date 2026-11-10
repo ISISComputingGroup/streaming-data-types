@@ -24,7 +24,8 @@ impl<'a> RunStop<'a> {
   pub const VT_JOB_ID: ::flatbuffers::VOffsetT = 8;
   pub const VT_SERVICE_ID: ::flatbuffers::VOffsetT = 10;
   pub const VT_COMMAND_ID: ::flatbuffers::VOffsetT = 12;
-  pub const VT_GPS_STOP_TIME: ::flatbuffers::VOffsetT = 14;
+  pub const VT_ABORT: ::flatbuffers::VOffsetT = 14;
+  pub const VT_GPS_STOP_TIME: ::flatbuffers::VOffsetT = 16;
 
   #[inline]
   pub unsafe fn init_from_table(table: ::flatbuffers::Table<'a>) -> Self {
@@ -42,6 +43,7 @@ impl<'a> RunStop<'a> {
     if let Some(x) = args.service_id { builder.add_service_id(x); }
     if let Some(x) = args.job_id { builder.add_job_id(x); }
     if let Some(x) = args.run_name { builder.add_run_name(x); }
+    builder.add_abort(args.abort);
     builder.finish()
   }
 
@@ -82,6 +84,13 @@ impl<'a> RunStop<'a> {
     unsafe { self._tab.get::<::flatbuffers::ForwardsUOffset<&str>>(RunStop::VT_COMMAND_ID, None)}
   }
   #[inline]
+  pub fn abort(&self) -> bool {
+    // Safety:
+    // Created from valid Table for this object
+    // which contains a valid value in this slot
+    unsafe { self._tab.get::<bool>(RunStop::VT_ABORT, Some(false)).unwrap()}
+  }
+  #[inline]
   pub fn gps_stop_time(&self) -> Option<u64> {
     // Safety:
     // Created from valid Table for this object
@@ -101,6 +110,7 @@ impl ::flatbuffers::Verifiable for RunStop<'_> {
      .visit_field::<::flatbuffers::ForwardsUOffset<&str>>("job_id", Self::VT_JOB_ID, false)?
      .visit_field::<::flatbuffers::ForwardsUOffset<&str>>("service_id", Self::VT_SERVICE_ID, false)?
      .visit_field::<::flatbuffers::ForwardsUOffset<&str>>("command_id", Self::VT_COMMAND_ID, false)?
+     .visit_field::<bool>("abort", Self::VT_ABORT, false)?
      .visit_field::<u64>("gps_stop_time", Self::VT_GPS_STOP_TIME, false)?
      .finish();
     Ok(())
@@ -112,6 +122,7 @@ pub struct RunStopArgs<'a> {
     pub job_id: Option<::flatbuffers::WIPOffset<&'a str>>,
     pub service_id: Option<::flatbuffers::WIPOffset<&'a str>>,
     pub command_id: Option<::flatbuffers::WIPOffset<&'a str>>,
+    pub abort: bool,
     pub gps_stop_time: Option<u64>,
 }
 impl<'a> Default for RunStopArgs<'a> {
@@ -123,6 +134,7 @@ impl<'a> Default for RunStopArgs<'a> {
       job_id: None,
       service_id: None,
       command_id: None,
+      abort: false,
       gps_stop_time: None,
     }
   }
@@ -154,6 +166,10 @@ impl<'a: 'b, 'b, A: ::flatbuffers::Allocator + 'a> RunStopBuilder<'a, 'b, A> {
     self.fbb_.push_slot_always::<::flatbuffers::WIPOffset<_>>(RunStop::VT_COMMAND_ID, command_id);
   }
   #[inline]
+  pub fn add_abort(&mut self, abort: bool) {
+    self.fbb_.push_slot::<bool>(RunStop::VT_ABORT, abort, false);
+  }
+  #[inline]
   pub fn add_gps_stop_time(&mut self, gps_stop_time: u64) {
     self.fbb_.push_slot_always::<u64>(RunStop::VT_GPS_STOP_TIME, gps_stop_time);
   }
@@ -180,6 +196,7 @@ impl ::core::fmt::Debug for RunStop<'_> {
       ds.field("job_id", &self.job_id());
       ds.field("service_id", &self.service_id());
       ds.field("command_id", &self.command_id());
+      ds.field("abort", &self.abort());
       ds.field("gps_stop_time", &self.gps_stop_time());
       ds.finish()
   }
