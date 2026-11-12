@@ -16,6 +16,7 @@ def serialise_6s4t(
     command_id: str = "",
     stop_time: Union[int, datetime, None] = None,
     abort: bool = False,
+    gps_stop_time: Union[int, datetime, None] = None,
 ) -> bytes:
     builder = flatbuffers.Builder(500)
     builder.ForceDefaults(True)
@@ -41,23 +42,25 @@ def serialise_6s4t(
     RunStop.RunStopAddCommandId(builder, command_id_offset)
     RunStop.RunStopAddAbort(builder, abort)
 
+    if gps_stop_time is not None:
+        if type(gps_stop_time) is datetime:
+            gps_stop_time = int(gps_stop_time.timestamp() * 1_000_000_000)
+        RunStop.RunStopAddGpsStopTime(builder, gps_stop_time)
+
     run_stop_message = RunStop.RunStopEnd(builder)
     builder.Finish(run_stop_message, file_identifier=FILE_IDENTIFIER)
 
     return bytes(builder.Output())
 
 
-RunStopInfo = NamedTuple(
-    "RunStopInfo",
-    (
-        ("stop_time", int),
-        ("run_name", str),
-        ("job_id", str),
-        ("service_id", str),
-        ("command_id", str),
-        ("abort", bool),
-    ),
-)
+class RunStopInfo(NamedTuple):
+    stop_time: int
+    run_name: str
+    job_id: str
+    service_id: str
+    command_id: str
+    abort: bool
+    gps_stop_time: int | None
 
 
 def deserialise_6s4t(buffer: Union[bytearray, bytes]) -> RunStopInfo:
@@ -70,6 +73,7 @@ def deserialise_6s4t(buffer: Union[bytearray, bytes]) -> RunStopInfo:
     stop_time = run_stop.StopTime()
     command_id = run_stop.CommandId()
     abort = run_stop.Abort()
+    gps_stop_time = run_stop.GpsStopTime()
 
     return RunStopInfo(
         stop_time=stop_time,
@@ -78,4 +82,5 @@ def deserialise_6s4t(buffer: Union[bytearray, bytes]) -> RunStopInfo:
         service_id=service_id.decode(),
         command_id=command_id.decode(),
         abort=abort,
+        gps_stop_time=gps_stop_time,
     )

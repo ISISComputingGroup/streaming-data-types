@@ -70,8 +70,15 @@ class RunStop(object):
             return bool(self._tab.Get(flatbuffers.number_types.BoolFlags, o + self._tab.Pos))
         return False
 
+    # RunStop
+    def GpsStopTime(self):
+        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(16))
+        if o != 0:
+            return self._tab.Get(flatbuffers.number_types.Uint64Flags, o + self._tab.Pos)
+        return None
+
 def RunStopStart(builder):
-    builder.StartObject(6)
+    builder.StartObject(7)
 
 def Start(builder):
     RunStopStart(builder)
@@ -111,6 +118,12 @@ def RunStopAddAbort(builder, abort):
 
 def AddAbort(builder, abort):
     RunStopAddAbort(builder, abort)
+
+def RunStopAddGpsStopTime(builder, gpsStopTime):
+    builder.PrependUint64Slot(6, gpsStopTime, None)
+
+def AddGpsStopTime(builder, gpsStopTime):
+    RunStopAddGpsStopTime(builder, gpsStopTime)
 
 def RunStopEnd(builder):
     return builder.EndObject()

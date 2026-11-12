@@ -13,6 +13,7 @@ class TestSerialisation6s4t:
         "service_id": "filewriter1",
         "command_id": "some command id",
         "abort": True,
+        "gps_stop_time": 123456789,
     }
 
     def test_serialises_and_deserialises_6s4t_message_correctly(self):
@@ -25,6 +26,7 @@ class TestSerialisation6s4t:
         assert deserialised_tuple.service_id == self.original_entry["service_id"]
         assert deserialised_tuple.command_id == self.original_entry["command_id"]
         assert deserialised_tuple.abort == self.original_entry["abort"]
+        assert deserialised_tuple.gps_stop_time == self.original_entry["gps_stop_time"]
 
     def test_if_buffer_has_wrong_id_then_throws(self):
         buf = serialise_6s4t(**self.original_entry)
